@@ -62,6 +62,7 @@ def create_res_net():
     return model
 
 
+import tensorflow as tf
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
 import datetime
@@ -71,7 +72,7 @@ import os
 x_train, y_train = x_train[:100], y_train[:100]
 x_test, y_test = x_test[:100], y_test[:100]
 
-strategy = Tensor.distribute.MirroredStrategy()
+strategy = tf.distribute.MirroredStrategy()
 print('Number of devices: {}'.format(strategy.num_replicas_in_sync))
 
 BATCH_SIZE_PER_REPLICA = 64
