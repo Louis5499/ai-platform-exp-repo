@@ -72,7 +72,7 @@ import os
 x_train, y_train = x_train[:100], y_train[:100]
 x_test, y_test = x_test[:100], y_test[:100]
 
-strategy = tf.distribute.MultiWorkerMirroredStrategy()
+strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
 print('Number of devices: {}'.format(strategy.num_replicas_in_sync))
 
 BATCH_SIZE_PER_REPLICA = 64
