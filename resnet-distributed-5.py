@@ -69,8 +69,8 @@ import datetime
 import os
 
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-x_train, y_train = x_train[:100], y_train[:100]
-x_test, y_test = x_test[:100], y_test[:100]
+x_train, y_train = x_train[:1000], y_train[:1000]
+x_test, y_test = x_test[:1000], y_test[:1000]
 
 strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
 print('Number of devices: {}'.format(strategy.num_replicas_in_sync))
@@ -90,11 +90,11 @@ with strategy.scope():
     # checkpoint_dir = os.path.dirname(checkpoint_path)
     # os.system('mkdir {}'.format(checkpoint_dir))
 
-    model.fit(
-        x=x_train,
-        y=y_train,
-        epochs=1000,
-        verbose=1,
-        validation_data=(x_test, y_test),
-        batch_size=BATCH_SIZE
-    )
+model.fit(
+    x=x_train,
+    y=y_train,
+    epochs=1000,
+    verbose=1,
+    validation_data=(x_test, y_test),
+    batch_size=BATCH_SIZE
+)
