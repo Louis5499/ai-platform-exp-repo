@@ -133,8 +133,12 @@ tf_config_json = json.loads(tf_config)
 cluster = tf_config_json.get('cluster')
 job_name = tf_config_json.get('task', {}).get('type')
 task_index = tf_config_json.get('task', {}).get('index')
-tf_config["task"] = {"index": 0, "type": "chief"}
-os.environ["TF_CONFIG"] = json.dumps(tf_config)
+
+tf_config_json["task"] = {"index": 0, "type": "chief"}
+cluster["chief"] = [cluster["worker"][0]]
+tf_config_json["cluster"] = cluster
+
+os.environ["TF_CONFIG"] = json.dumps(tf_config_json)
 print("cluster=%s job_name=%s task_index=%s", cluster, job_name,
                 task_index)
 
