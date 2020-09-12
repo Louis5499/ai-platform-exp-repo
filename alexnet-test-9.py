@@ -11,7 +11,7 @@ from tensorflow.python.keras.utils import np_utils
 
 nb_train_samples = 3000
 nb_valid_samples = 100
-num_classes = 2
+num_classes = 10
 
 from tensorflow.python import keras
 def load_cifar10_data(img_rows, img_cols):
@@ -237,7 +237,7 @@ def main(_):
       while not mon_sess.should_stop():
         # image_batch, label_batch = get_batch(train_images[:100],train_labels[:100], 227, 227, 50, 2048)
         # batch_xs, batch_ys = train_images[:100], train_labels[:100]
-        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: train_images, y: train_labels})
+        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: train_images, y: onehot(train_labels)})
 
         sys.stderr.write('global_step: '+str(step))
         sys.stderr.write('\n')
