@@ -24,9 +24,9 @@ from tensorflow.python.keras.initializers import glorot_uniform
 # import scipy.misc
 # from matplotlib.pyplot import imshow
 # %matplotlib inline
-import keras.backend as K
-K.set_image_data_format('channels_last')
-K.set_learning_phase(1)
+# import keras.backend as K
+# K.set_image_data_format('channels_last')
+# K.set_learning_phase(1)
  
 def identity_block(X, f, filters,stage, block):
   conv_name_base = 'res' + str(stage) + block + '_branch'
