@@ -132,7 +132,7 @@ cluster["chief"] = [cluster["worker"][0]]
 tf_config_json["cluster"] = cluster
 
 os.environ["TF_CONFIG"] = json.dumps(tf_config_json)
-print("cluster=%s job_name=%s task_index=%s", cluster, j)
+print("cluster=%s job_name=%s task_index=%s", cluster, job_name, task_index)
 
 model = ResNet50(input_shape = (32, 32, 3), classes = 10)
  
