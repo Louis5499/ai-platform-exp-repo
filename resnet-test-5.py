@@ -98,12 +98,13 @@ def model_fn(features, labels, mode):
       train_op=optimizer.minimize(
           loss, tf.compat.v1.train.get_or_create_global_step()))
 
-strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
+# strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
+# config = tf.estimator.RunConfig(train_distribute=strategy)
 
-config = tf.estimator.RunConfig(train_distribute=strategy)
-
+# classifier = tf.estimator.Estimator(
+#     model_fn=model_fn, model_dir='/tmp/multiworker', config=config)
 classifier = tf.estimator.Estimator(
-    model_fn=model_fn, model_dir='/tmp/multiworker', config=config)
+    model_fn=model_fn, model_dir='/tmp/multiworker')
 tf.estimator.train_and_evaluate(
     classifier,
     train_spec=tf.estimator.TrainSpec(input_fn=input_fn),
