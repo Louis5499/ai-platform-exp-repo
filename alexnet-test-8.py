@@ -11,7 +11,7 @@ from tensorflow.python.keras.utils import np_utils
 
 nb_train_samples = 3000
 nb_valid_samples = 100
-num_classes = 10
+num_classes = 2
 
 from tensorflow.python import keras
 def load_cifar10_data(img_rows, img_cols):
