@@ -17,6 +17,34 @@ class Empty:
 
 FLAGS = Empty()
 
+def get_batch(image_list,label_list,img_width,img_height,batch_size,capacity):
+  image=tf.cast(image_list,tf.string)
+  label=tf.cast(label_list,tf.int32)
+
+  input_queue=tf.train.slice_input_producer([image,label])
+
+  label=input_queue[1]
+  image_contents=tf.read_file(input_queue[0]) #通过图片地址读取图片
+  image=tf.image.decode_jpeg(image_contents,channels=3) #解码图片成矩阵
+
+  image=tf.image.resize_image_with_crop_or_pad(image,img_width,img_height)
+  '''
+  tf.image.resize_images 不能保证图像的纵横比,这样用来做抓取位姿的识别,可能受到影响
+  tf.image.resize_image_with_crop_or_pad可让纵横比不变
+  '''
+  image=tf.image.per_image_standardization(image) #将图片标准化
+  image_batch,label_batch=tf.train.batch([image,label],batch_size=batch_size,num_threads=64,capacity=capacity)
+  '''
+  tf.train.batch([example, label], batch_size=batch_size, capacity=capacity)：
+  1.[example, label]表示样本和样本标签,这个可以是一个样本和一个样本标签
+  2.batch_size是返回的一个batch样本集的样本个数
+  3.num_threads是线程
+  4.capacity是队列中的容量。
+  '''
+  label_batch=tf.reshape(label_batch,[batch_size])
+
+  return image_batch,label_batch
+
 
 def batch_norm(inputs,is_train,is_conv_out=True,decay=0.999):
     scale=tf.Variable(tf.ones([inputs.get_shape()[-1]]))
@@ -73,7 +101,7 @@ def main(_):
       n_fc2 = 2048
 
       # 构建模型
-      x = tf.placeholder(tf.float32, [None, 32, 32, 3])
+      x = tf.placeholder(tf.float32, [None, 227, 227, 3])
       y = tf.placeholder(tf.float32, [None, n_classes])
 
       W_conv = {
@@ -97,7 +125,7 @@ def main(_):
           'fc3': tf.Variable(tf.constant(0.0, dtype=tf.float32, shape=[n_classes]))
       }
 
-      x_image = tf.reshape(x, [-1, 32, 32, 3])
+      x_image = tf.reshape(x, [-1, 227, 227, 3])
 
       # 卷积层 1
       conv1 = tf.nn.conv2d(x_image, W_conv['conv1'], strides=[1, 4, 4, 1], padding='VALID')
@@ -179,8 +207,9 @@ def main(_):
                                            hooks=hooks) as mon_sess:
 
       while not mon_sess.should_stop():
-        batch_xs, batch_ys = train_images[:100], train_labels[:100]
-        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: batch_xs, y: batch_ys})
+        image_batch, label_batch = get_batch(train_images[:100],train_labels[:100], 227, 227, 50, 2048)
+        # batch_xs, batch_ys = train_images[:100], train_labels[:100]
+        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: image_batch, y: label_batch})
 
         sys.stderr.write('global_step: '+str(step))
         sys.stderr.write('\n')
