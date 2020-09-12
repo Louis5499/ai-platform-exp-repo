@@ -168,7 +168,7 @@ print ("Y_test shape: " + str(Y_test.shape))
 keras_estimator = tf.keras.estimator.model_to_estimator(keras_model = model)
  
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
-  x={'input_1': X_train},
+  x={'input_1': X_train.astype(np.float32)},
   y=Y_train,
   num_epochs = 10,
   batch_size = 128,
