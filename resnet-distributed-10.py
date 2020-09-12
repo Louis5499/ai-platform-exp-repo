@@ -35,9 +35,6 @@ def identity_block(X, f, filters,stage, block):
   bn_name_base = 'bn' + str(stage) + block + '_branch'
   
   F1, F2, F3 = filters
-  F1 = tf.cast(F1, dtype='float64')
-  F2 = tf.cast(F2, dtype='float64')
-  F3 = tf.cast(F3, dtype='float64')
   
   X_shortcut = X
   
@@ -62,9 +59,6 @@ def convolutional_block(X, f, filters, stage, block, s = 2):
   bn_name_base = 'bn' + str(stage) + block + '_branch'
   
   F1, F2, F3 = filters
-  F1 = tf.cast(F1, dtype='float64')
-  F2 = tf.cast(F2, dtype='float64')
-  F3 = tf.cast(F3, dtype='float64')
   
   X_shortcut = X
   
