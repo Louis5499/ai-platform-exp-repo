@@ -3,50 +3,75 @@ import sys
 import os
 import ast
 
+import tensorflow as tf
+import numpy as np
+import cv2
+
+from tensorflow.python.keras.utils import np_utils
+
+nb_train_samples = 3000
+nb_valid_samples = 100
+num_classes = 10
+
 from tensorflow.python import keras
-(train_images, train_labels), (test_images, test_labels) = keras.datasets.cifar10.load_data()
+def load_cifar10_data(img_rows, img_cols):
+    (x_train, y_train), (x_valid, y_valid) = keras.datasets.cifar10.load_data()
+    print(x_train.shape, y_train.shape, x_valid.shape, y_valid.shape)
+    # (50000, 32, 32, 3) (50000, 1) (10000, 32, 32, 3) (10000, 1)
+ 
+    x_train = np.array([cv2.resize(img, (img_rows, img_cols)) for img in x_train[:nb_train_samples, :, :, :]])
+    x_valid = np.array([cv2.resize(img, (img_rows, img_cols)) for img in x_valid[:nb_valid_samples, :, :, :]])
+    print(x_train.shape, x_valid.shape)
+    # (3000, 224, 224, 3) (100, 224, 224, 3)
+ 
+    y_train = np_utils.to_categorical(y_train[:nb_train_samples], num_classes)
+    y_valid = np_utils.to_categorical(y_valid[:nb_valid_samples], num_classes)
+    print(y_train.shape, y_valid.shape)
+    # (3000, 10) (100, 10)
+ 
+    return x_train, y_train, x_valid, y_valid
+ 
+train_images, train_labels, test_images, test_labels = load_cifar10_data(227, 227)
+
 
 # from tensorflow.examples.tutorials.mnist import input_data
 # mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
-
-import tensorflow as tf
-import numpy as np
 
 class Empty:
   pass
 
 FLAGS = Empty()
 
-def get_batch(image_list,label_list,img_width,img_height,batch_size,capacity):
-  # image=tf.cast(image_list,tf.string)
-  # label=tf.cast(label_list,tf.int32)
+# def get_batch(image_list,label_list,img_width,img_height,batch_size,capacity):
+#   # image=tf.cast(image_list,tf.string)
+#   # label=tf.cast(label_list,tf.int32)
 
-  # input_queue=tf.train.slice_input_producer([image,label])
+#   # input_queue=tf.train.slice_input_producer([image,label])
 
-  # label=input_queue[1]
-  # image_contents=tf.read_file(input_queue[0]) #通过图片地址读取图片
-  # image=tf.image.decode_jpeg(image_contents,channels=3) #解码图片成矩阵
-  new_list = []
-  for image in range(image_list):
-    image = tf.image.resize_image_with_crop_or_pad(image,img_width,img_height)
-    image = tf.image.per_image_standardization(image) #将图片标准化
-    new_list.append(image)
-  '''
-  tf.image.resize_images 不能保证图像的纵横比,这样用来做抓取位姿的识别,可能受到影响
-  tf.image.resize_image_with_crop_or_pad可让纵横比不变
-  '''
+#   # label=input_queue[1]
+#   # image_contents=tf.read_file(input_queue[0]) #通过图片地址读取图片
+#   # image=tf.image.decode_jpeg(image_contents,channels=3) #解码图片成矩阵
+#   new_list = []
+#   for image in range(image_list):
+#     image = tf.image.resize_image_with_crop_or_pad(image,img_width,img_height)
+#     image = tf.image.per_image_standardization(image) #将图片标准化
+#     new_list.append(image)
+#   '''
+#   tf.image.resize_images 不能保证图像的纵横比,这样用来做抓取位姿的识别,可能受到影响
+#   tf.image.resize_image_with_crop_or_pad可让纵横比不变
+#   '''
   
-  # image_batch,label_batch=tf.train.batch([image,label],batch_size=batch_size,num_threads=64,capacity=capacity)
-  '''
-  tf.train.batch([example, label], batch_size=batch_size, capacity=capacity)：
-  1.[example, label]表示样本和样本标签,这个可以是一个样本和一个样本标签
-  2.batch_size是返回的一个batch样本集的样本个数
-  3.num_threads是线程
-  4.capacity是队列中的容量。
-  '''
-  # label_batch=tf.reshape(label_batch,[batch_size])
+#   # image_batch,label_batch=tf.train.batch([image,label],batch_size=batch_size,num_threads=64,capacity=capacity)
+#   '''
+#   tf.train.batch([example, label], batch_size=batch_size, capacity=capacity)：
+#   1.[example, label]表示样本和样本标签,这个可以是一个样本和一个样本标签
+#   2.batch_size是返回的一个batch样本集的样本个数
+#   3.num_threads是线程
+#   4.capacity是队列中的容量。
+#   '''
+#   # label_batch=tf.reshape(label_batch,[batch_size])
 
-  return new_list,label_batch
+#   return new_list,label_batch
 
 
 def batch_norm(inputs,is_train,is_conv_out=True,decay=0.999):
@@ -210,9 +235,9 @@ def main(_):
                                            hooks=hooks) as mon_sess:
 
       while not mon_sess.should_stop():
-        image_batch, label_batch = get_batch(train_images[:100],train_labels[:100], 227, 227, 50, 2048)
+        # image_batch, label_batch = get_batch(train_images[:100],train_labels[:100], 227, 227, 50, 2048)
         # batch_xs, batch_ys = train_images[:100], train_labels[:100]
-        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: image_batch, y: label_batch})
+        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: train_images, y: train_labels})
 
         sys.stderr.write('global_step: '+str(step))
         sys.stderr.write('\n')
