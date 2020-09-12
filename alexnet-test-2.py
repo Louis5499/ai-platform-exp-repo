@@ -179,7 +179,7 @@ def main(_):
                                            hooks=hooks) as mon_sess:
 
       while not mon_sess.should_stop():
-        batch_xs, batch_ys = train_images[:100], onehot(train_labels[:100])
+        batch_xs, batch_ys = train_images[:100], train_labels[:100]
         _, step = mon_sess.run([optimizer, global_step], feed_dict={x: batch_xs, y: batch_ys})
 
         sys.stderr.write('global_step: '+str(step))
