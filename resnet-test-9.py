@@ -103,7 +103,7 @@ def model_fn(features, labels, mode):
 # classifier = tf.estimator.Estimator(
 #     model_fn=model_fn, model_dir='/tmp/multiworker', config=config)
 tf_config = os.environ.get('TF_CONFIG', '{}')
-tf.logging.info("TF_CONFIG %s", tf_config)
+# tf.logging.info("TF_CONFIG %s", tf_config)
 tf_config_json = json.loads(tf_config)
 cluster = tf_config_json.get('cluster')
 job_name = tf_config_json.get('task', {}).get('type')
