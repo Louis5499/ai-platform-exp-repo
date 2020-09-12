@@ -39,16 +39,16 @@ def input_fn(mode, input_context=None):
     image = tf.image.resize(image, (227,227))
     return image, label
 
-  train_ds_size = tf.data.experimental.cardinality(train_ds).numpy()
-  test_ds_size = tf.data.experimental.cardinality(test_ds).numpy()
-  validation_ds_size = tf.data.experimental.cardinality(validation_ds).numpy()
-  print("Training data size:", train_ds_size)
-  print("Test data size:", test_ds_size)
-  print("Validation data size:", validation_ds_size)
+  # train_ds_size = tf.data.experimental.cardinality(train_ds).numpy()
+  # test_ds_size = tf.data.experimental.cardinality(test_ds).numpy()
+  # validation_ds_size = tf.data.experimental.cardinality(validation_ds).numpy()
+  # print("Training data size:", train_ds_size)
+  # print("Test data size:", test_ds_size)
+  # print("Validation data size:", validation_ds_size)
 
   train_ds = (train_ds
                   .map(process_images)
-                  .shuffle(buffer_size=train_ds_size)
+                  .shuffle(buffer_size=10)
                   .batch(batch_size=32, drop_remainder=True))
 
   return train_ds
