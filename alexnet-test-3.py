@@ -73,7 +73,7 @@ def main(_):
       n_fc2 = 2048
 
       # 构建模型
-      x = tf.placeholder(tf.float32, [None, 227, 227, 3])
+      x = tf.placeholder(tf.float32, [None, 32, 32, 3])
       y = tf.placeholder(tf.float32, [None, n_classes])
 
       W_conv = {
@@ -97,7 +97,7 @@ def main(_):
           'fc3': tf.Variable(tf.constant(0.0, dtype=tf.float32, shape=[n_classes]))
       }
 
-      x_image = tf.reshape(x, [-1, 227, 227, 3])
+      x_image = tf.reshape(x, [-1, 32, 32, 3])
 
       # 卷积层 1
       conv1 = tf.nn.conv2d(x_image, W_conv['conv1'], strides=[1, 4, 4, 1], padding='VALID')
