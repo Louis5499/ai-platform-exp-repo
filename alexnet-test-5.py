@@ -18,22 +18,25 @@ class Empty:
 FLAGS = Empty()
 
 def get_batch(image_list,label_list,img_width,img_height,batch_size,capacity):
-  image=tf.cast(image_list,tf.string)
-  label=tf.cast(label_list,tf.int32)
+  # image=tf.cast(image_list,tf.string)
+  # label=tf.cast(label_list,tf.int32)
 
-  input_queue=tf.train.slice_input_producer([image,label])
+  # input_queue=tf.train.slice_input_producer([image,label])
 
-  label=input_queue[1]
-  image_contents=tf.read_file(input_queue[0]) #通过图片地址读取图片
-  image=tf.image.decode_jpeg(image_contents,channels=3) #解码图片成矩阵
-
-  image=tf.image.resize_image_with_crop_or_pad(image,img_width,img_height)
+  # label=input_queue[1]
+  # image_contents=tf.read_file(input_queue[0]) #通过图片地址读取图片
+  # image=tf.image.decode_jpeg(image_contents,channels=3) #解码图片成矩阵
+  new_list = []
+  for image in range(image_list):
+    image = tf.image.resize_image_with_crop_or_pad(image,img_width,img_height))
+    image = tf.image.per_image_standardization(image) #将图片标准化
+    new_list.append(image)
   '''
   tf.image.resize_images 不能保证图像的纵横比,这样用来做抓取位姿的识别,可能受到影响
   tf.image.resize_image_with_crop_or_pad可让纵横比不变
   '''
-  image=tf.image.per_image_standardization(image) #将图片标准化
-  image_batch,label_batch=tf.train.batch([image,label],batch_size=batch_size,num_threads=64,capacity=capacity)
+  
+  # image_batch,label_batch=tf.train.batch([image,label],batch_size=batch_size,num_threads=64,capacity=capacity)
   '''
   tf.train.batch([example, label], batch_size=batch_size, capacity=capacity)：
   1.[example, label]表示样本和样本标签,这个可以是一个样本和一个样本标签
@@ -41,9 +44,9 @@ def get_batch(image_list,label_list,img_width,img_height,batch_size,capacity):
   3.num_threads是线程
   4.capacity是队列中的容量。
   '''
-  label_batch=tf.reshape(label_batch,[batch_size])
+  # label_batch=tf.reshape(label_batch,[batch_size])
 
-  return image_batch,label_batch
+  return new_list,label_batch
 
 
 def batch_norm(inputs,is_train,is_conv_out=True,decay=0.999):
