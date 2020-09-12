@@ -125,17 +125,19 @@ def input_fn():
   dataset = dataset.repeat(10)
   dataset = dataset.batch(128)
   return dataset
- 
+
+class Empty:
+  pass
+
+FLAGS = Empty()
+
 TF_CONFIG = ast.literal_eval(os.environ["TF_CONFIG"])
 FLAGS.job_name = TF_CONFIG["task"]["type"]
 FLAGS.task_index = TF_CONFIG["task"]["index"]
 FLAGS.ps_hosts = ",".join(TF_CONFIG["cluster"]["ps"])
 FLAGS.worker_hosts = ",".join(TF_CONFIG["cluster"]["worker"])
 
-class Empty:
-  pass
 
-FLAGS = Empty()
 ps_hosts = FLAGS.ps_hosts.split(",")
 worker_hosts = FLAGS.worker_hosts.split(",")
 
