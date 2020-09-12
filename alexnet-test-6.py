@@ -28,7 +28,7 @@ def get_batch(image_list,label_list,img_width,img_height,batch_size,capacity):
   # image=tf.image.decode_jpeg(image_contents,channels=3) #解码图片成矩阵
   new_list = []
   for image in range(image_list):
-    image = tf.image.resize_image_with_crop_or_pad(image,img_width,img_height))
+    image = tf.image.resize_image_with_crop_or_pad(image,img_width,img_height)
     image = tf.image.per_image_standardization(image) #将图片标准化
     new_list.append(image)
   '''
