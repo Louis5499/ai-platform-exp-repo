@@ -216,7 +216,7 @@ def main(_):
     def onehot(labels):
       '''one-hot 编码'''
       n_sample = len(labels)
-      n_class = max(labels) + 1
+      n_class = 10
       onehot_labels = np.zeros((n_sample, n_class))
       onehot_labels[np.arange(n_sample), labels] = 1
       return onehot_labels
@@ -235,8 +235,6 @@ def main(_):
                                            hooks=hooks) as mon_sess:
 
       while not mon_sess.should_stop():
-        # image_batch, label_batch = get_batch(train_images[:100],train_labels[:100], 227, 227, 50, 2048)
-        # batch_xs, batch_ys = train_images[:100], train_labels[:100]
         _, step = mon_sess.run([optimizer, global_step], feed_dict={x: train_images, y: onehot(train_labels)})
 
         sys.stderr.write('global_step: '+str(step))
