@@ -167,6 +167,7 @@ print ("Y_test shape: " + str(Y_test.shape))
  
 keras_estimator = tf.keras.estimator.model_to_estimator(keras_model = model)
  
+print('Ready to generate numpy_input_fn')
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
   x={'input_1': X_train.astype(np.float32)},
   y=Y_train,
@@ -174,6 +175,7 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
   batch_size = 128,
   shuffle=True)
  
+print('Ready to train model')
 time_start = time.time()
 print('Start time' + str(time_start))
 keras_estimator.train(input_fn=train_input_fn, steps=390)
