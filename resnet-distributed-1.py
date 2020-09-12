@@ -16,13 +16,13 @@ from tensorflow.python.keras.utils import layer_utils
 from tensorflow.python.keras.utils.data_utils import get_file
 from tensorflow.python.keras.applications.imagenet_utils import preprocess_input
 from tensorflow.python.keras.datasets import cifar10
-import pydot
-from IPython.display import SVG
+# import pydot
+# from IPython.display import SVG
 from tensorflow.python.keras.utils.vis_utils import model_to_dot
 from tensorflow.python.keras.utils import plot_model
 from tensorflow.python.keras.initializers import glorot_uniform
-import scipy.misc
-from matplotlib.pyplot import imshow
+# import scipy.misc
+# from matplotlib.pyplot import imshow
 # %matplotlib inline
 import keras.backend as K
 K.set_image_data_format('channels_last')
@@ -155,7 +155,7 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
 time_start = time.time()
 keras_estimator.train(input_fn=train_input_fn, steps=390)
 time_end = time.time()
-print (time_end - time_start)
+print(time_end - time_start)
  
 test_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={model.input_names[0]: X_test.astype(np.float32)},
