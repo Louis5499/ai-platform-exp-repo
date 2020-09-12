@@ -17,8 +17,8 @@ spec:
           - name: tensorflow
             image: tensorflow/tensorflow:1.15.0-py3
             command: ["/bin/sh","-c"]
-            args: ["apt update && apt install -y libsm6 libxext6 libgl1-mesa-glx && apt-get install -y libxrender-dev && pip install opencv-python && curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/alexnet-test-3.py | python3 -"]
-            # command: ["pip install cv2 && ", "/bin/bash", "-c", "curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/alexnet-test-3.py | python3 -"]
+            args: ["apt update && apt install -y libsm6 libxext6 libgl1-mesa-glx && apt-get install -y libxrender-dev && pip install opencv-python && curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/alexnet-test-4.py | python3 -"]
+            # command: ["pip install cv2 && ", "/bin/bash", "-c", "curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/alexnet-test-4.py | python3 -"]
             ports:
             - containerPort: 2222
               name: tfjob-port
@@ -36,7 +36,7 @@ spec:
           - name: tensorflow
             image: tensorflow/tensorflow:1.15.0-gpu-py3
             command: ["/bin/sh","-c"]
-            args: ["apt update && apt install -y libsm6 libxext6 libgl1-mesa-glx && apt-get install -y libxrender-dev && pip install opencv-python && curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/alexnet-test-3.py | python3 -"]
+            args: ["apt update && apt install -y libsm6 libxext6 libgl1-mesa-glx && apt-get install -y libxrender-dev && pip install opencv-python && curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/alexnet-test-4.py | python3 -"]
             env:
             - name: "global_steps"
               value: "100000"
