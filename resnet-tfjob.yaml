@@ -15,8 +15,8 @@ spec:
           terminationGracePeriodSeconds: 0
           containers:
           - name: tensorflow
-            image: tensorflow/tensorflow:1.15.0-py3
-            command: ["/bin/bash", "-c", "curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/resnet-test-7.py | python3 -"]
+            image: tensorflow/tensorflow:latest-py3
+            command: ["/bin/bash", "-c", "curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/resnet-test-8.py | python3 -"]
             ports:
             - containerPort: 2222
               name: tfjob-port
@@ -32,8 +32,8 @@ spec:
           terminationGracePeriodSeconds: 0
           containers:
           - name: tensorflow
-            image: tensorflow/tensorflow:1.15.0-gpu-py3
-            command: ["/bin/bash", "-c", "curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/resnet-test-7.py | python3 -"]
+            image: tensorflow/tensorflow:latest-gpu-py3
+            command: ["/bin/bash", "-c", "curl -s https://raw.githubusercontent.com/Louis5499/ai-platform-exp-repo/master/resnet-test-8.py | python3 -"]
             env:
             - name: "global_steps"
               value: "100000"

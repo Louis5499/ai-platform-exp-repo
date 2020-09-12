@@ -1,7 +1,6 @@
 # import tensorflow_datasets as tfds
 import tensorflow as tf
 from tensorflow.python import keras
-tf.enable_eager_execution()
 import os, json
 
 BUFFER_SIZE = 10000
