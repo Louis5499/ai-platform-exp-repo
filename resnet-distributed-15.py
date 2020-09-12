@@ -175,7 +175,7 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
   shuffle=True)
  
 time_start = time.time()
-print('Start time' + time_start)
+print('Start time' + str(time_start))
 keras_estimator.train(input_fn=train_input_fn, steps=390)
 time_end = time.time()
 print(time_end - time_start)
