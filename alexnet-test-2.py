@@ -124,7 +124,7 @@ def main(_):
       training_iters = 200
       batch_size = 50
       display_step = 5
-      n_classes = 2
+      n_classes = 10
       n_fc1 = 4096
       n_fc2 = 2048
 
@@ -235,7 +235,7 @@ def main(_):
                                            hooks=hooks) as mon_sess:
 
       while not mon_sess.should_stop():
-        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: train_images, y: onehot(train_labels)})
+        _, step = mon_sess.run([optimizer, global_step], feed_dict={x: train_images, y: train_labels})
 
         sys.stderr.write('global_step: '+str(step))
         sys.stderr.write('\n')
