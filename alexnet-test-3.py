@@ -236,9 +236,9 @@ def main(_):
 
       while not mon_sess.should_stop():
         _, step = mon_sess.run([optimizer, global_step], feed_dict={x: train_images, y: train_labels})
-
-        sys.stderr.write('global_step: '+str(step))
-        sys.stderr.write('\n')
+        print(step)
+        # sys.stderr.write('global_step: '+str(step))
+        # sys.stderr.write('\n')
 
 
 if __name__ == "__main__":
