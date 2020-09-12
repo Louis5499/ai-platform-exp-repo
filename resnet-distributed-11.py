@@ -24,9 +24,9 @@ from tensorflow.python.keras.initializers import glorot_uniform
 # import scipy.misc
 # from matplotlib.pyplot import imshow
 # # %matplotlib inline
-# import keras.backend as K
-# K.set_image_data_format('channels_last')
-# K.set_learning_phase(1)
+from tensorflow.python.keras import backend as K
+K.set_image_data_format('channels_last')
+K.set_learning_phase(1)
 import os
 import json
  
