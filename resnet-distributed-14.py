@@ -170,14 +170,15 @@ keras_estimator = tf.keras.estimator.model_to_estimator(keras_model = model)
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
   x={'input_1': X_train.astype(np.float32)},
   y=Y_train,
-  num_epochs = 10,
+  num_epochs = 1,
   batch_size = 128,
   shuffle=True)
  
 time_start = time.time()
+print('Start time' + time_start)
 keras_estimator.train(input_fn=train_input_fn, steps=390)
 time_end = time.time()
-print (time_end - time_start)
+print(time_end - time_start)
  
 test_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={model.input_names[0]: X_test.astype(np.float32)},
