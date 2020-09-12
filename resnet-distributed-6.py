@@ -133,6 +133,9 @@ tf_config_json = json.loads(tf_config)
 cluster = tf_config_json.get('cluster')
 job_name = tf_config_json.get('task', {}).get('type')
 task_index = tf_config_json.get('task', {}).get('index')
+print("cluster=%s job_name=%s task_index=%s", cluster, job_name,
+                task_index)
+
 tf.logging.info("cluster=%s job_name=%s task_index=%s", cluster, job_name,
                 task_index)
  
