@@ -229,6 +229,7 @@ def main(_):
     # or an error occurs.
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7)
     session_conf = tf.ConfigProto(gpu_options=gpu_options, device_filters=["/job:ps", "/job:worker/task:%d" % FLAGS.task_index])
+    session_conf.gpu_options.allow_growth = True
     with tf.train.MonitoredTrainingSession(master=server.target,
                                            is_chief=(FLAGS.task_index == 0),
                                            config=session_conf,
