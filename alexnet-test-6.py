@@ -227,11 +227,11 @@ def main(_):
     # The MonitoredTrainingSession takes care of session initialization,
     # restoring from a checkpoint, saving to a checkpoint, and closing when done
     # or an error occurs.
+    session_conf = tf.ConfigProto(device_filters=["/job:ps", "/job:worker/task:%d" % FLAGS.task_index])
+    session_conf.gpu_options.per_process_gpu_memory_fraction = 0.5
     with tf.train.MonitoredTrainingSession(master=server.target,
                                            is_chief=(FLAGS.task_index == 0),
-                                           config=tf.ConfigProto(
-                                               device_filters=["/job:ps", "/job:worker/task:%d" % FLAGS.task_index]
-                                           ),
+                                           config=session_conf,
                                            hooks=hooks) as mon_sess:
 
       while not mon_sess.should_stop():
