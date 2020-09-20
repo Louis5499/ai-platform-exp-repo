@@ -1,0 +1,44 @@
+apiVersion: kubeflow.org/v1
+kind: TFJob
+metadata:
+  name: job-resnet-4-0.5
+spec:
+  max-instances: 2
+  min-instances: 2
+  cleanPodPolicy: "All"
+  tfReplicaSpecs:
+    PS:
+      replicas: 1
+      restartPolicy: OnFailure
+      template:
+        spec:
+          terminationGracePeriodSeconds: 0
+          containers:
+          - name: tensorflow
+            image: cemizm/tf-benchmark-gpu
+            command: ["/bin/bash", "-c", "python3 tf_cnn_benchmarks.py --num_epochs=0.01 --local_parameter_device=cpu --device=cpu --model=resnet50 --data_format=NHWC"]
+            ports:
+            - containerPort: 2222
+              name: tfjob-port
+            resources:
+              limits:
+                cpu: "4"
+                # memory: "8Gi"
+    Worker:
+      replicas: 2
+      restartPolicy: OnFailure
+      template:
+        spec:
+          terminationGracePeriodSeconds: 0
+          containers:
+          - name: tensorflow
+            image: cemizm/tf-benchmark-gpu
+            command: ["/bin/bash", "-c", "python3 tf_cnn_benchmarks.py --num_epochs=0.01 --local_parameter_device=cpu --device=gpu --model=resnet50 --data_format=NHWC"]
+            ports:
+            - containerPort: 2222
+              name: tfjob-port
+            resources:
+              limits:
+                cpu: "4"
+                memory: "8Gi"
+                "nvidia.com/gpu": 1
